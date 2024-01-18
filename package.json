@@ -1,0 +1,14 @@
+{
+  "name": "careverse-helper-lambdas",
+  "version": "1.0.0",
+  "description": "Alert Notification System for ECS",
+  "main": "src/notifyAlerts.js",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1538.0"
+  }
+}

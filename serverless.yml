@@ -1,0 +1,64 @@
+service: ecs-state-notifier
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-southeast-1
+  stage: ${opt:stage, 'dev'}
+
+functions:
+  careverse-notification-alerts:
+    handler: src/notifyAlerts.notifyAlerts
+    role: NotifyAlertLambdaExecutionRole
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - cloudwatchEvent:
+          event:
+            source:
+              - 'aws.ecs'
+              - "ecs.amazonaws.com"
+            detail-type:
+              - 'ECS Task State Change'
+            detail:
+              lastStatus:
+                - "STOPPED"
+              clusterArn:
+                - !Sub arn:aws:ecs:${self:provider.region}:${AWS::AccountId}:cluster/peace-${self:provider.stage}-cluster
+
+resources:
+  Resources:
+    NotifyAlertLambdaExecutionRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+        RoleName: !Sub ${self:provider.stage}-notify-alert-lambda-execution-role
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "lambda.amazonaws.com"
+              Action: "sts:AssumeRole"
+        Policies:
+          - PolicyName: !Sub ${self:provider.stage}-notify-alert-lambda-execution-policy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
+                  Action:
+                    - "ses:SendEmail"
+                    - "ses:SendRawEmail"
+                  Resource: "*"
+                - Effect: "Allow"
+                  Action:
+                    - "logs:CreateLogGroup"
+                    - "logs:CreateLogStream"
+                    - "logs:PutLogEvents"
+                  Resource: "*"
+                - Effect: "Allow"
+                  Action:
+                    - "ecs:DescribeTasks"
+                    - "ecs:ListTasks"
+                  Resource: "*"
