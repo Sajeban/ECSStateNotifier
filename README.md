@@ -1,4 +1,4 @@
-# Careverse Helper Lambdas
+# ECS State Notifying Lambda
 
 
 ### Install Serverless
