@@ -1,5 +1,5 @@
 {
-  "name": "careverse-helper-lambdas",
+  "name": "ECS State Notifier",
   "version": "1.0.0",
   "description": "Alert Notification System for ECS",
   "main": "src/notifyAlerts.js",
