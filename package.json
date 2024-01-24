@@ -1,5 +1,5 @@
 {
-  "name": "ECS State Notifier",
+  "name": "ecs-state-notifier",
   "version": "1.0.0",
   "description": "Alert Notification System for ECS",
   "main": "src/notifyAlerts.js",
