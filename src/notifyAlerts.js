@@ -7,7 +7,7 @@ exports.notifyAlerts = async (event) => {
 
     const params = {
         // Verify this email in SES
-        Source: `critical-alerts${env}@email-address.com`,
+        Source: `critical-alerts-${env}@email-address.com`,
 
         // Verify recipient email as well
         Destination: {
