@@ -3,9 +3,11 @@ const aws = require('aws-sdk');
 const ses = new aws.SES({region: 'ap-southeast-1'});
 
 exports.notifyAlerts = async (event) => {
+    const env = process.env.STAGE
+
     const params = {
         // Verify this email in SES
-        Source: `critical-alerts@email-address.com`,
+        Source: `critical-alerts${env}@email-address.com`,
 
         // Verify recipient email as well
         Destination: {
